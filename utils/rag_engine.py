@@ -1,22 +1,34 @@
+import streamlit as st
 import chromadb
 from sentence_transformers import SentenceTransformer
 
-model = SentenceTransformer(
-    "all-MiniLM-L6-v2"
-)
 
-client = chromadb.PersistentClient(
-    path="chroma_db"
-)
+@st.cache_resource
+def get_rag_resources():
 
-collection = client.get_or_create_collection(
-    name="university_docs"
-)
+    model = SentenceTransformer(
+        "all-MiniLM-L6-v2"
+    )
+
+    client = chromadb.PersistentClient(
+        path="chroma_db"
+    )
+
+    collection = client.get_or_create_collection(
+        name="university_docs"
+    )
+
+    return model, collection
+
+
+model, collection = get_rag_resources()
 
 
 def add_document(text):
 
-    embedding = model.encode(text).tolist()
+    embedding = model.encode(
+        text
+    ).tolist()
 
     collection.add(
         ids=[str(collection.count() + 1)],

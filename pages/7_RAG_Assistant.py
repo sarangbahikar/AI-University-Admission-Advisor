@@ -5,6 +5,14 @@ from utils.rag_engine import add_document
 from utils.rag_engine import retrieve
 from utils.rag_chat import answer_question
 
+import time
+
+start = time.time()
+
+# imports
+
+st.write(f"Page loaded in {round(time.time()-start,2)} sec")
+
 st.title("🤖 University RAG Assistant")
 
 uploaded_file = st.file_uploader(
