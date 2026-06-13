@@ -1,5 +1,5 @@
 import streamlit as st
-
+st.sidebar.success("🎓 AI University Admission Advisor")
 from utils.pdf_parser import extract_text_from_pdf
 from utils.resume_analyzer import analyze_resume
 

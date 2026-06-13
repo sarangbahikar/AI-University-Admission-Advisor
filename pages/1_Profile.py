@@ -1,5 +1,5 @@
 import streamlit as st
-
+st.sidebar.success("🎓 AI University Admission Advisor")
 st.title("👤 Student Profile")
 
 st.subheader("Academic Information")

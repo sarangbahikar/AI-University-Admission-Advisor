@@ -4,7 +4,7 @@ from utils.pdf_parser import extract_text_from_pdf
 from utils.rag_engine import add_document
 from utils.rag_engine import retrieve
 from utils.rag_chat import answer_question
-
+st.sidebar.success("🎓 AI University Admission Advisor")
 import time
 
 start = time.time()

@@ -2,7 +2,7 @@ import streamlit as st
 
 from utils.pdf_parser import extract_text_from_pdf
 from utils.sop_analyzer import analyze_sop
-
+st.sidebar.success("🎓 AI University Admission Advisor")
 st.title("📝 SOP Analyzer")
 
 uploaded_file = st.file_uploader(

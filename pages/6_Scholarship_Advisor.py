@@ -3,7 +3,7 @@ import streamlit as st
 from utils.scholarship_advisor import (
     recommend_scholarships
 )
-
+st.sidebar.success("🎓 AI University Admission Advisor")
 st.title("🎓 Scholarship Advisor")
 
 if "profile" not in st.session_state:

@@ -3,7 +3,7 @@ import pandas as pd
 
 from utils.schema_mapper import detect_schema
 from utils.recommendation_engine import recommend_universities
-
+st.sidebar.success("🎓 AI University Admission Advisor")
 st.title("🏛️ University Recommendation Engine")
 
 # Debug Session State

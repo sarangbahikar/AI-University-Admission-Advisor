@@ -1,6 +1,6 @@
 import streamlit as st
 from utils.admission_predictor import predict_admission
-
+st.sidebar.success("🎓 AI University Admission Advisor")
 st.title("📊 Admission Predictor")
 
 if "profile" not in st.session_state:
