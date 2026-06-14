@@ -13,4 +13,5 @@ chroma_db/
 .idea/
 .vscode/
 
-*.pkl
+!models/admission_model.pkl
+requirements_backup.txt
