@@ -48,10 +48,23 @@ with col2:
     )
 
 with col3:
-    st.metric(
-        "Model R²",
-        "0.7901"
-    )
+    try:
+
+        with open(
+            "models/model_metrics.txt",
+            "r"
+        ) as f:
+
+            metric = f.read()
+
+    except:
+
+        metric = "Not Available"
+
+st.metric(
+    "Model Performance",
+    metric
+)
 
 with col4:
     st.metric(
@@ -104,6 +117,31 @@ Discover scholarship opportunities.
 
 ### Step 6
 Upload PDFs and query them using RAG.
+""")
+
+
+st.subheader("🏗️ Project Architecture")
+
+st.markdown("""
+Profile + Dataset Upload
+        ↓
+Groq Schema Detection
+        ↓
+Recommendation Engine
+
+Resume/SOP
+        ↓
+Groq Analysis
+
+Admissions Dataset
+        ↓
+Random Forest Model
+
+PDF Upload
+        ↓
+ChromaDB + Embeddings
+        ↓
+Groq RAG Assistant
 """)
 
 st.divider()
