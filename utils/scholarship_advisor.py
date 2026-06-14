@@ -11,7 +11,10 @@ Student Profile:
 Name: {profile['name']}
 Course: {profile['course']}
 CGPA: {profile['cgpa']}
-IELTS: {profile['ielts']}
+
+English Test: {profile['english_test']}
+English Score: {profile['english_score']}
+
 Experience: {profile['experience']}
 Projects: {profile['projects']}
 Research Papers: {profile['research_papers']}
@@ -26,6 +29,7 @@ Recommend:
 5. Application Tips
 
 Focus on:
+
 - Chevening Scholarship
 - Commonwealth Scholarship
 - GREAT Scholarship

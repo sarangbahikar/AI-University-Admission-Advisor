@@ -3,12 +3,19 @@ import pandas as pd
 
 from utils.schema_mapper import detect_schema
 from utils.recommendation_engine import recommend_universities
-st.sidebar.success("🎓 AI University Admission Advisor")
+
+st.sidebar.success(
+    "🎓 AI University Admission Advisor"
+)
+
 st.title("🏛️ University Recommendation Engine")
 
-# Debug Session State
-st.subheader("🔍 Session State Debug")
-st.write(st.session_state)
+st.markdown(
+    """
+Upload a university dataset and receive personalized
+recommendations based on your profile.
+"""
+)
 
 uploaded_file = st.file_uploader(
     "Upload University Dataset",
@@ -19,39 +26,57 @@ if uploaded_file:
 
     df = pd.read_csv(uploaded_file)
 
-    st.subheader("Dataset Preview")
-    st.dataframe(df.head())
+    st.subheader("📄 Dataset Preview")
 
-    if st.button("Detect Schema"):
+    st.dataframe(
+        df.head()
+    )
 
-        with st.spinner("Analyzing Dataset..."):
+    if st.button(
+        "🔍 Detect Schema & Recommend"
+    ):
 
-            mapping = detect_schema(df)
+        with st.spinner(
+            "Analyzing Dataset..."
+        ):
+
+            mapping = detect_schema(
+                df
+            )
 
         st.session_state["mapping"] = mapping
 
-        st.success("Schema Detected Successfully")
+        st.success(
+            "Schema Detected Successfully"
+        )
 
-        st.subheader("Detected Schema")
+        st.subheader(
+            "Detected Schema"
+        )
 
-        st.json(mapping)
+        st.json(
+            mapping
+        )
 
-        # Check Profile Exists
         if "profile" not in st.session_state:
 
-            st.error("❌ Profile not found in Session State")
-
-            st.write("Current Session State:")
-
-            st.json(dict(st.session_state))
+            st.error(
+                "Please save your profile first from the Student Profile page."
+            )
 
         else:
 
-            st.success("✅ Profile Found")
+            st.success(
+                "Profile Loaded Successfully"
+            )
 
-            st.subheader("Current Profile")
+            with st.expander(
+                "👤 View Profile"
+            ):
 
-            st.json(st.session_state["profile"])
+                st.json(
+                    st.session_state["profile"]
+                )
 
             recommendations = recommend_universities(
                 df,
@@ -59,6 +84,15 @@ if uploaded_file:
                 st.session_state["profile"]
             )
 
-            st.subheader("🎓 Recommended Universities")
+            st.subheader(
+                "🎓 Recommended Universities"
+            )
 
-            st.dataframe(recommendations)
+            st.dataframe(
+                recommendations,
+                use_container_width=True
+            )
+
+            st.success(
+                f"{len(recommendations)} universities matched your profile."
+            )

@@ -9,90 +9,105 @@ st.set_page_config(
 st.title("🎓 AI University Admission Advisor")
 
 st.markdown("""
-Your AI-powered platform for:
+### Your AI-powered platform for international university admissions.
 
-- 🎓 University Recommendations
+Features include:
+
 - 📄 Resume Analysis
 - 📝 SOP Analysis
+- 🏛️ University Recommendations
 - 📊 Admission Prediction
-- 💰 Scholarship Recommendations
-- 🤖 RAG-based University Assistant
+- 💰 Scholarship Advisor
+- 🤖 RAG University Assistant
 """)
 
 st.divider()
 
-col1, col2, col3 = st.columns(3)
+# ------------------------
+# Metrics
+# ------------------------
+
+profile_status = (
+    "✅ Saved"
+    if "profile" in st.session_state
+    else "❌ Not Saved"
+)
+
+col1, col2, col3, col4, col5 = st.columns(5)
 
 with col1:
-
-    profile_status = (
-        "✅ Saved"
-        if "profile" in st.session_state
-        else "❌ Not Saved"
-    )
-
     st.metric(
-        "Profile Status",
+        "Profile",
         profile_status
     )
 
 with col2:
-
     st.metric(
         "AI Modules",
         "6"
     )
 
 with col3:
-
     st.metric(
-        "Project Version",
-        "1.0"
+        "Model R²",
+        "0.7901"
+    )
+
+with col4:
+    st.metric(
+        "RAG",
+        "Enabled"
+    )
+
+with col5:
+    st.metric(
+        "Dataset Engine",
+        "Dynamic"
     )
 
 st.divider()
 
-st.subheader("🚀 Features")
+st.subheader("🚀 Platform Modules")
 
-features = [
-    "Student Profile",
-    "Resume Analyzer",
-    "SOP Analyzer",
-    "University Recommendation Engine",
-    "Admission Predictor",
-    "Scholarship Advisor",
-    "ChromaDB RAG Assistant"
+modules = [
+    "👤 Student Profile",
+    "📄 Resume Analyzer",
+    "📝 SOP Analyzer",
+    "🏛️ University Recommendation Engine",
+    "📊 Admission Predictor",
+    "💰 Scholarship Advisor",
+    "🤖 University RAG Assistant"
 ]
 
-for feature in features:
-    st.success(feature)
+for module in modules:
+    st.success(module)
 
 st.divider()
 
-st.subheader("📌 How To Use")
+st.subheader("📌 Workflow")
 
 st.markdown("""
 ### Step 1
-Save your profile.
+Create and save your student profile.
 
 ### Step 2
-Upload university dataset and get recommendations.
+Upload university datasets and receive recommendations.
 
 ### Step 3
-Analyze Resume and SOP.
+Analyze your Resume and SOP using GenAI.
 
 ### Step 4
-Predict admission probability.
+Predict admission probability using a real ML model.
 
 ### Step 5
-Discover scholarships.
+Discover scholarship opportunities.
 
 ### Step 6
-Use the AI RAG Assistant to ask questions from uploaded PDFs.
+Upload PDFs and query them using RAG.
 """)
 
 st.divider()
 
 st.info(
-    "Built using Streamlit, Groq, ChromaDB, Scikit-Learn and Generative AI."
+    "Built using Streamlit, Groq, ChromaDB, Sentence Transformers, Scikit-Learn and Generative AI."
 )
