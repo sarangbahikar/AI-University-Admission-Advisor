@@ -1,19 +1,32 @@
 import streamlit as st
+import time
 
 from utils.pdf_parser import extract_text_from_pdf
 from utils.rag_engine import add_document
 from utils.rag_engine import retrieve
 from utils.rag_chat import answer_question
-st.sidebar.success("🎓 AI University Admission Advisor")
-import time
+
+st.sidebar.success(
+    "🎓 AI University Admission Advisor"
+)
 
 start = time.time()
 
-# imports
-
-st.write(f"Page loaded in {round(time.time()-start,2)} sec")
-
 st.title("🤖 University RAG Assistant")
+
+st.info(
+    "Upload university-related PDFs and ask questions using Retrieval-Augmented Generation (RAG)."
+)
+
+st.write(
+    f"⚡ Page loaded in {round(time.time()-start, 2)} sec"
+)
+
+st.divider()
+
+# -----------------------------
+# Upload PDF
+# -----------------------------
 
 uploaded_file = st.file_uploader(
     "Upload PDF",
@@ -26,7 +39,13 @@ if uploaded_file:
         uploaded_file
     )
 
-    if st.button("Add to Knowledge Base"):
+    st.success(
+        "PDF Processed Successfully"
+    )
+
+    if st.button(
+        "📚 Add to Knowledge Base"
+    ):
 
         add_document(text)
 
@@ -36,19 +55,47 @@ if uploaded_file:
 
 st.divider()
 
+# -----------------------------
+# Ask Questions
+# -----------------------------
+
 question = st.text_input(
     "Ask a Question"
 )
 
-if st.button("Get Answer"):
+if st.button(
+    "🔍 Get Answer"
+):
 
-    context = retrieve(question)
+    if question.strip() == "":
 
-    answer = answer_question(
-        context,
-        question
-    )
+        st.warning(
+            "Please enter a question."
+        )
 
-    st.subheader("Answer")
+    else:
 
-    st.write(answer)
+        context = retrieve(
+            question
+        )
+
+        with st.expander(
+            "📄 Retrieved Context"
+        ):
+
+            st.write(
+                context
+            )
+
+        answer = answer_question(
+            context,
+            question
+        )
+
+        st.subheader(
+            "🤖 Answer"
+        )
+
+        st.write(
+            answer
+        )
