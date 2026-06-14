@@ -9,22 +9,40 @@ def recommend_universities(df, mapping, profile):
 
         score = 0
 
-        # IELTS Match
+        # English Test Match (IELTS-based datasets)
+
         try:
 
             if mapping.get("ielts"):
 
-                required_ielts = float(
+                required_english_score = float(
                     row[mapping["ielts"]]
                 )
 
-                if profile["ielts"] >= required_ielts:
-                    score += 35
+                if profile["english_test"] == "IELTS":
+
+                    if profile["english_score"] >= required_english_score:
+                        score += 35
+
+                elif profile["english_test"] == "TOEFL":
+
+                    # Approximate IELTS ↔ TOEFL conversion
+                    # IELTS 6.5 ≈ TOEFL 90
+                    # IELTS 7.0 ≈ TOEFL 100
+                    # IELTS 7.5 ≈ TOEFL 105
+
+                    estimated_ielts = (
+                        profile["english_score"] / 15
+                    )
+
+                    if estimated_ielts >= required_english_score:
+                        score += 35
 
         except:
             pass
 
         # CGPA Match
+
         try:
 
             if mapping.get("cgpa"):
@@ -40,6 +58,7 @@ def recommend_universities(df, mapping, profile):
             pass
 
         # Course Match
+
         try:
 
             if mapping.get("course"):
@@ -55,7 +74,6 @@ def recommend_universities(df, mapping, profile):
                 ).lower()
 
                 if student_course in dataset_course:
-
                     score += 30
 
         except:
@@ -78,6 +96,7 @@ def recommend_universities(df, mapping, profile):
                 row[mapping["tuition"]]
                 if mapping.get("tuition")
                 else "N/A"
+
         })
 
     recommendations = sorted(

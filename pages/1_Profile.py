@@ -1,5 +1,7 @@
 import streamlit as st
+
 st.sidebar.success("🎓 AI University Admission Advisor")
+
 st.title("👤 Student Profile")
 
 st.subheader("Academic Information")
@@ -26,13 +28,31 @@ cgpa = st.number_input(
     value=7.0
 )
 
-ielts = st.number_input(
-    "IELTS Score",
-    min_value=0.0,
-    max_value=9.0,
-    step=0.5,
-    value=6.5
+english_test = st.radio(
+    "English Proficiency Test",
+    [
+        "IELTS",
+        "TOEFL"
+    ]
 )
+
+if english_test == "IELTS":
+
+    english_score = st.number_input(
+        "IELTS Score",
+        min_value=0.0,
+        max_value=9.0,
+        step=0.5
+    )
+
+else:
+
+    english_score = st.number_input(
+        "TOEFL Score",
+        min_value=0,
+        max_value=120,
+        step=1
+    )
 
 st.subheader("Profile Strength")
 
@@ -66,26 +86,26 @@ certifications = st.number_input(
 
 if st.button("💾 Save Profile"):
 
-    profile = {
+    st.session_state["profile"] = {
         "name": name,
         "course": course,
         "cgpa": cgpa,
-        "ielts": ielts,
+        "english_test": english_test,
+        "english_score": english_score,
         "experience": experience,
         "projects": projects,
         "research_papers": research_papers,
         "certifications": certifications
     }
 
-    st.session_state["profile"] = profile
-
     st.success("Profile Saved Successfully!")
 
     st.subheader("Saved Profile")
 
-    st.json(profile)
+    st.json(st.session_state["profile"])
 
 # Show existing profile if already saved
+
 if "profile" in st.session_state:
 
     st.divider()
