@@ -25,6 +25,7 @@ Identify the following fields:
 4. ielts
 5. course
 6. location
+7. cgpa
 
 Return ONLY valid JSON.
 
@@ -36,7 +37,8 @@ Example:
   "tuition":"Fees",
   "ielts":"English_Test",
   "course":"Course_Name",
-  "location":"Location"
+  "location":"Location",
+  "cgpa":"Minimum_CGPA"
 }}
 """
 

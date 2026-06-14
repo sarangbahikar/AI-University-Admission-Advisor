@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 def recommend_universities(df, mapping, profile):
 
     recommendations = []
@@ -8,47 +9,75 @@ def recommend_universities(df, mapping, profile):
 
         score = 0
 
-        # IELTS Score
-        if "ielts" in mapping:
+        # IELTS Match
+        try:
 
-            try:
-                required_ielts = float(row[mapping["ielts"]])
+            if mapping.get("ielts"):
+
+                required_ielts = float(
+                    row[mapping["ielts"]]
+                )
 
                 if profile["ielts"] >= required_ielts:
-                    score += 40
+                    score += 35
 
-            except:
-                pass
+        except:
+            pass
 
-        # CGPA Score
-        if "Min_CGPA" in df.columns:
+        # CGPA Match
+        try:
 
-            try:
-                min_cgpa = float(row["Min_CGPA"])
+            if mapping.get("cgpa"):
 
-                if profile["cgpa"] >= min_cgpa:
-                    score += 40
+                required_cgpa = float(
+                    row[mapping["cgpa"]]
+                )
 
-            except:
-                pass
+                if profile["cgpa"] >= required_cgpa:
+                    score += 35
+
+        except:
+            pass
 
         # Course Match
-        if "course" in mapping:
+        try:
 
-            try:
+            if mapping.get("course"):
 
-                if profile["course"].lower() in str(
+                student_course = (
+                    profile["course"]
+                    .lower()
+                    .strip()
+                )
+
+                dataset_course = str(
                     row[mapping["course"]]
-                ).lower():
+                ).lower()
 
-                    score += 20
+                if student_course in dataset_course:
 
-            except:
-                pass
+                    score += 30
+
+        except:
+            pass
 
         recommendations.append({
-            "University": row[mapping["university"]],
-            "Match Score": score
+
+            "University":
+                row[mapping["university"]],
+
+            "Match Score":
+                score,
+
+            "Location":
+                row[mapping["location"]]
+                if mapping.get("location")
+                else "N/A",
+
+            "Tuition":
+                row[mapping["tuition"]]
+                if mapping.get("tuition")
+                else "N/A"
         })
 
     recommendations = sorted(
@@ -57,4 +86,6 @@ def recommend_universities(df, mapping, profile):
         reverse=True
     )
 
-    return recommendations[:10]
+    return pd.DataFrame(
+        recommendations[:10]
+    )
