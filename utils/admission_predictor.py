@@ -4,18 +4,19 @@ import pandas as pd
 model = joblib.load(
     "models/admission_model.pkl"
 )
-
-def predict_admission(profile):
+print("REAL MODEL LOADED")
+def predict_admission(data):
 
     df = pd.DataFrame([{
-        "cgpa": profile["cgpa"],
-        "ielts": profile["ielts"],
-        "experience": profile["experience"],
-        "projects": profile["projects"],
-        "research_papers": profile["research_papers"],
-        "certifications": profile["certifications"]
+        "GRE Score": data["gre"],
+        "TOEFL Score": data["toefl"],
+        "University Rating": data["university_rating"],
+        "SOP": data["sop"],
+        "LOR": data["lor"],
+        "CGPA": data["cgpa"],
+        "Research": data["research"]
     }])
 
-    probability = model.predict_proba(df)[0][1]
+    prediction = model.predict(df)[0]
 
-    return round(probability * 100, 2)
+    return round(prediction * 100, 2)

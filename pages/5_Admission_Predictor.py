@@ -1,71 +1,113 @@
 import streamlit as st
-from utils.admission_predictor import predict_admission
-st.sidebar.success("🎓 AI University Admission Advisor")
-st.title("📊 Admission Predictor")
 
-if "profile" not in st.session_state:
+from utils.admission_predictor import (
+    predict_admission
+)
 
-    st.warning("Please save profile first.")
+st.sidebar.success(
+    "🎓 AI University Admission Advisor"
+)
 
-else:
+st.title("📊 Advanced Admission Predictor")
 
-    profile = st.session_state["profile"]
+with open(
+    "models/model_metrics.txt",
+    "r"
+) as f:
 
-    st.subheader("Current Profile")
+    metric = f.read()
 
-    st.json(profile)
+st.info(
+    f"Model Performance: {metric}"
+)
 
-    if st.button("Predict Admission Probability"):
+st.markdown(
+    "Predict admission probability using a model trained on a real graduate admissions dataset."
+)
 
-        probability = predict_admission(profile)
+gre = st.slider(
+    "GRE Score",
+    260,
+    340,
+    310
+)
 
-        st.metric(
-            "Admission Probability",
-            f"{probability}%"
+toefl = st.slider(
+    "TOEFL Score",
+    80,
+    120,
+    100
+)
+
+university_rating = st.slider(
+    "University Rating",
+    1,
+    5,
+    3
+)
+
+sop = st.slider(
+    "SOP Strength",
+    1.0,
+    5.0,
+    3.0,
+    0.5
+)
+
+lor = st.slider(
+    "LOR Strength",
+    1.0,
+    5.0,
+    3.0,
+    0.5
+)
+
+cgpa = st.slider(
+    "CGPA",
+    0.0,
+    10.0,
+    8.0,
+    0.1
+)
+
+research = st.selectbox(
+    "Research Experience",
+    [0, 1]
+)
+
+if st.button(
+    "Predict Admission Chance"
+):
+
+    probability = predict_admission({
+        "gre": gre,
+        "toefl": toefl,
+        "university_rating": university_rating,
+        "sop": sop,
+        "lor": lor,
+        "cgpa": cgpa,
+        "research": research
+    })
+
+    st.metric(
+        "Admission Probability",
+        f"{probability}%"
+    )
+
+    if probability >= 80:
+
+        st.success(
+            "Excellent Admission Prospects"
         )
 
-        if probability >= 80:
+    elif probability >= 60:
 
-            st.success("Strong Admission Profile")
+        st.warning(
+            "Moderate Admission Prospects"
+        )
 
-            st.write("""
-        ### Strengths
+    else:
 
-        ✅ Competitive academic profile
-
-        ### Suggestions
-
-        • Add certifications
-
-        • Build more projects
-
-        • Improve research exposure
-        """)
-
-        elif probability >= 60:
-
-            st.warning("Moderate Admission Profile")
-
-            st.write("""
-        ### Suggestions
-
-        • Increase project portfolio
-
-        • Improve IELTS score
-
-        • Obtain certifications
-        """)
-
-        else:
-
-            st.error("Profile Needs Improvement")
-
-            st.write("""
-        ### Suggestions
-
-        • Improve CGPA
-
-        • Improve IELTS
-
-        • Add projects and certifications
-        """)
+        st.error(
+            "Admission Chances Need Improvement"
+        )

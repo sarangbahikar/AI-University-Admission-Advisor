@@ -10,7 +10,7 @@ df = pd.read_csv(
 )
 
 df.columns = df.columns.str.strip()
-
+print(df.columns.tolist())  
 X = df[
     [
         "GRE Score",
@@ -67,3 +67,15 @@ with open(
 print(
     "Model Saved Successfully"
 )
+
+sample = pd.DataFrame([{
+    "GRE Score": 290,
+    "TOEFL Score": 85,
+    "University Rating": 2,
+    "SOP": 2,
+    "LOR": 2,
+    "CGPA": 6.5,
+    "Research": 0
+}])
+
+print("Test Prediction:", model.predict(sample)[0])
