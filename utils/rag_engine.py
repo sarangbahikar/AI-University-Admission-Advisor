@@ -21,17 +21,14 @@ def get_rag_resources():
     return model, collection
 
 
-model, collection = get_rag_resources()
-
-
 # --------------------------------
 # Text Chunking
 # --------------------------------
 
 def chunk_text(
     text,
-    chunk_size=500,
-    overlap=100
+    chunk_size=300,
+    overlap=50
 ):
 
     chunks = []
@@ -42,11 +39,13 @@ def chunk_text(
 
         end = start + chunk_size
 
-        chunk = text[start:end]
+        chunks.append(
+            text[start:end]
+        )
 
-        chunks.append(chunk)
-
-        start += chunk_size - overlap
+        start += (
+            chunk_size - overlap
+        )
 
     return chunks
 
@@ -57,9 +56,15 @@ def chunk_text(
 
 def add_document(text):
 
+    model, collection = (
+        get_rag_resources()
+    )
+
     chunks = chunk_text(text)
 
-    current_count = collection.count()
+    current_count = (
+        collection.count()
+    )
 
     for i, chunk in enumerate(chunks):
 
@@ -77,17 +82,22 @@ def add_document(text):
 
 
 # --------------------------------
-# Retrieve Relevant Chunks
+# Retrieve Chunks
 # --------------------------------
 
 def retrieve(
     query,
-    top_k=5
+    top_k=3
 ):
 
-    query_embedding = model.encode(
-        query
-    ).tolist()
+    model, collection = (
+        get_rag_resources()
+    )
+
+    query_embedding = (
+        model.encode(query)
+        .tolist()
+    )
 
     results = collection.query(
         query_embeddings=[
@@ -96,6 +106,34 @@ def retrieve(
         n_results=top_k
     )
 
-    documents = results["documents"][0]
+    documents = (
+        results["documents"][0]
+    )
 
-    return "\n\n".join(documents)
+    return "\n\n".join(
+        documents
+    )
+
+
+# --------------------------------
+# Clear Knowledge Base
+# --------------------------------
+
+def clear_knowledge_base():
+
+    client = chromadb.PersistentClient(
+        path="chroma_db"
+    )
+
+    try:
+
+        client.delete_collection(
+            "university_docs"
+        )
+
+    except:
+        pass
+
+    client.get_or_create_collection(
+        name="university_docs"
+    )

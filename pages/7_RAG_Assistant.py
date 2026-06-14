@@ -2,8 +2,11 @@ import streamlit as st
 import time
 
 from utils.pdf_parser import extract_text_from_pdf
-from utils.rag_engine import add_document
-from utils.rag_engine import retrieve
+from utils.rag_engine import (
+    add_document,
+    retrieve,
+    clear_knowledge_base
+)
 from utils.rag_chat import answer_question
 
 st.sidebar.success(
@@ -47,11 +50,33 @@ if uploaded_file:
         "📚 Add to Knowledge Base"
     ):
 
-        add_document(text)
+        with st.spinner(
+            "Creating embeddings and storing document..."
+        ):
+
+            add_document(text)
 
         st.success(
             "Document Added Successfully"
         )
+
+# -----------------------------
+# Clear Database
+# -----------------------------
+
+if st.button(
+    "🗑️ Clear Knowledge Base"
+):
+
+    with st.spinner(
+        "Clearing database..."
+    ):
+
+        clear_knowledge_base()
+
+    st.success(
+        "Knowledge Base Cleared"
+    )
 
 st.divider()
 
@@ -75,9 +100,13 @@ if st.button(
 
     else:
 
-        context = retrieve(
-            question
-        )
+        with st.spinner(
+            "Retrieving relevant information..."
+        ):
+
+            context = retrieve(
+                question
+            )
 
         with st.expander(
             "📄 Retrieved Context"
@@ -87,10 +116,14 @@ if st.button(
                 context
             )
 
-        answer = answer_question(
-            context,
-            question
-        )
+        with st.spinner(
+            "Generating answer..."
+        ):
+
+            answer = answer_question(
+                context,
+                question
+            )
 
         st.subheader(
             "🤖 Answer"
